@@ -1,0 +1,89 @@
+# @file boards.txt
+# @version 0.0
+#
+# @section License
+# These board descriptions are in the public domain
+#
+#
+# @section Description
+# The board definition files for the Arduino IDE.
+
+
+# AVR:ATmega2560
+# Ext Crystal Osc.>8 MHz; Start-up time PWRDWN/RESET: 16K CK + 65 ms
+# Brown-out detection level 2.7 V. Serial program downloading enabled
+# Boot Reset vector enable (4096 words, 0x1f000).
+ChainMega.name=Chainduino Mega (Wiring)(ATmega2560/STK500v2)
+ChainMega.upload.tool=avrdude
+ChainMega.upload.protocol=wiring
+ChainMega.upload.maximum_size=253952
+ChainMega.upload.maximum_data_size=8192
+# ChainMega.upload.maximum_eeprom_size=4096
+ChainMega.upload.speed=115200
+
+ChainMega.bootloader.tool=arduino:avrdude
+ChainMega.bootloader.low_fuses=0xFF
+ChainMega.bootloader.high_fuses=0xD8
+ChainMega.bootloader.extended_fuses=0xFD
+ChainMega.bootloader.file=stk500v2/stk500boot_v2_mega2560.hex
+ChainMega.bootloader.unlock_bits=0x3F
+ChainMega.bootloader.lock_bits=0x0F
+
+ChainMega.build.mcu=atmega2560
+ChainMega.build.f_cpu=16000000L
+ChainMega.build.board=AVR_MEGA2560
+ChainMega.build.variant=mega2560
+ChainMega.build.core=arduino:arduino
+
+# AVR:ATmega2560
+# Ext Crystal Osc.>8 MHz; Start-up time PWRDWN/RESET: 16K CK + 65 ms
+# Brown-out detection level 2.7 V. Serial program downloading enabled
+# Boot Reset vector enable (4096 words, 0x1f000).
+ChainMegaC.name=Chainduino Mega (Cosa)(ATmega2560/STK500v2)
+ChainMegaC.upload.tool=avrdude
+ChainMegaC.upload.protocol=wiring
+ChainMegaC.upload.maximum_size=253952
+ChainMegaC.upload.maximum_data_size=8192
+# ChainMegaC.upload.maximum_eeprom_size=4096
+ChainMegaC.upload.speed=115200
+
+ChainMegaC.bootloader.tool=arduino:avrdude
+ChainMegaC.bootloader.low_fuses=0xFF
+ChainMegaC.bootloader.high_fuses=0xD8
+ChainMegaC.bootloader.extended_fuses=0xFD
+ChainMegaC.bootloader.file=stk500v2/stk500boot_v2_mega2560.hex
+ChainMegaC.bootloader.unlock_bits=0x3F
+ChainMegaC.bootloader.lock_bits=0x0F
+
+ChainMegaC.build.mcu=atmega2560
+ChainMegaC.build.f_cpu=16000000L
+ChainMegaC.build.board=AVR_MEGA2560
+ChainMegaC.build.variant=mega2560
+ChainMegaC.build.core=Cosa:cosa
+
+
+# AVR:ATmega328
+# Ext Crystal Osc.>8 MHz; Start-up time PWRDWN/RESET: 16K CK/14 CK + 65 ms
+# Brown-out detection level 2.7 V. Serial program downloading enabled
+# Boot Reset vector enable (256 words, 0x3f00).
+ChainPrimo.name=Chainduino Primo (ATmega328/Optiboot)
+ChainPrimo.upload.tool=arduino:avrdude
+ChainPrimo.upload.protocol=arduino
+ChainPrimo.upload.maximum_size=32256
+ChainPrimo.upload.maximum_data_size=2048
+##ChainPrimo.upload.maximum_eeprom_size=1024
+ChainPrimo.upload.speed=115200
+
+ChainPrimo.bootloader.tool=arduino:avrdude
+ChainPrimo.bootloader.low_fuses=0xFF
+ChainPrimo.bootloader.high_fuses=0xDE
+ChainPrimo.bootloader.extended_fuses=0x05
+ChainPrimo.bootloader.unlock_bits=0x3F
+ChainPrimo.bootloader.lock_bits=0x0F
+ChainPrimo.bootloader.file=optiboot/optiboot_atmega328.hex
+
+ChainPrimo.build.mcu=atmega328p
+ChainPrimo.build.f_cpu=16000000L
+ChainPrimo.build.board=AVR_UNO
+ChainPrimo.build.core=arduino:arduino
+ChainPrimo.build.variant=primo

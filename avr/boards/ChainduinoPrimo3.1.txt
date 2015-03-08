@@ -1,0 +1,36 @@
+# @file boards.txt
+# @version 0.0
+#
+# @section License
+# These board descriptions are in the public domain
+#
+#
+# @section Description
+# The board definition files for the Arduino IDE.
+
+
+# AVR:ATmega328
+# Ext Crystal Osc.>8 MHz; Start-up time PWRDWN/RESET: 16K CK/14 CK + 65 ms
+# Brown-out detection level 2.7 V. Serial program downloading enabled
+# Boot Reset vector enable (256 words, 0x3f00).
+ChainPrimo.name=Chainduino Primo (ATmega328/Optiboot)
+ChainPrimo.upload.tool=arduino:avrdude
+ChainPrimo.upload.protocol=arduino
+ChainPrimo.upload.maximum_size=32256
+ChainPrimo.upload.maximum_data_size=2048
+##ChainPrimo.upload.maximum_eeprom_size=1024
+ChainPrimo.upload.speed=115200
+
+ChainPrimo.bootloader.tool=arduino:avrdude
+ChainPrimo.bootloader.low_fuses=0xFF
+ChainPrimo.bootloader.high_fuses=0xDE
+ChainPrimo.bootloader.extended_fuses=0x05
+ChainPrimo.bootloader.unlock_bits=0x3F
+ChainPrimo.bootloader.lock_bits=0x0F
+ChainPrimo.bootloader.file=optiboot/optiboot_atmega328.hex
+
+ChainPrimo.build.mcu=atmega328p
+ChainPrimo.build.f_cpu=16000000L
+ChainPrimo.build.board=AVR_UNO
+ChainPrimo.build.core=arduino:arduino
+ChainPrimo.build.variant=primo

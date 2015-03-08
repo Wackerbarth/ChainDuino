@@ -1,0 +1,3 @@
+#define ARDUINO_MEGA
+#define ARDUINO_MEGA2560
+#define CHAINDUINO_MEGA

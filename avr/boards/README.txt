@@ -1,0 +1,1 @@
+Archive board descriptions in this folder and copy only the ones that you are using into boards.txt
