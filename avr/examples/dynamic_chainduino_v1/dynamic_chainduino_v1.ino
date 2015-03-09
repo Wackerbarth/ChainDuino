@@ -1,9 +1,11 @@
 #include <ICSC.h>
+
 //NEOPIXEL Stuff
-#include <Adafruit_NeoPixel.h>
-#define PIN A1 //pin of RGB LEDs (chainduino PRIMO is 13)
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(2, PIN, NEO_GRB + NEO_KHZ800); //there are 2 RGB LEDs on chainduino PRIMO/MEGA
-//End neopixel stuff
+#ifdef HAS_NEOPIXEL_ARRAY
+  //There are 2 RGB LEDs on chainduino PRIMO/MEGA
+  #include <Adafruit_NeoPixel.h>
+  Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUMBER_OF_NEOPIXEL_ELEMENTS, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
+#endif
 
 //STATION and POLLLING settings (most apply to master station 1)
 int station = 1;  // change station number here (BEFORE uploading to each node)
@@ -165,3 +167,4 @@ void HeartBeat(unsigned char src, char command, unsigned char len, char *data)
   unsigned long currentMillis = millis();
   PULSEtime = currentMillis;
 }
+
