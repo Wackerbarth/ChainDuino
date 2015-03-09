@@ -4,14 +4,17 @@
 #ifdef HAS_NEOPIXEL_ARRAY
   //There are 2 RGB LEDs on chainduino PRIMO/MEGA
   #include <Adafruit_NeoPixel.h>
-  Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUMBER_OF_NEOPIXEL_ELEMENTS, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
+  static Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUMBER_OF_NEOPIXEL_ELEMENTS, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
 #endif
 
-//STATION and POLLLING settings (most apply to master station 1)
-int station = 1;  // change station number here (BEFORE uploading to each node)
-int stations = 2; // number of stations
-int POLLstep = 0; // current polling step
-int POLLsteps = 1; // total number of polling steps
+// TIME
+unsigned long currentMillis = millis();
+  
+//STATION and POLLING settings (most apply to master station 1)
+unsigned int station = 3;  // change station number here (BEFORE uploading to each node)
+unsigned int stations = 3; // number of stations
+unsigned int POLLstep = 0; // current polling step
+unsigned int POLLsteps = 1; // total number of polling steps
  //delay between polling for data from nodes
    #define POLLspeed 100
 long POLLtime; //time most recent POLL was run
@@ -26,9 +29,9 @@ boolean PULSEdetect = false; //controls the start of the green flashing if pulse
 
 //LED variables
 long LEDbirth; // will store last time LED was updated (color set)
-int LEDlifespan = 500; // how long the LED stays on
-int LEDstepspeed = 50; // speed of which to update the LED
-int LEDstepsize = 5;
+unsigned int LEDlifespan = 500; // how long the LED stays on
+unsigned int LEDstepspeed = 50; // speed of which to update the LED
+unsigned int LEDstepsize = 5;
 long LEDsteptime; // will store last time color step was sent to the LED
 int Rset = 0;
 int Gset = 0;
@@ -46,6 +49,12 @@ int Bnow = 0;
 //colorWipe(strip.Color(255, 197, 143), 100); // White 2600k
 //colorWipe(strip.Color(255, 148, 47), 100); // White 1900k candle
 
+unsigned int timeSince(unsigned long ref) {
+  return (static_cast<unsigned int>(currentMillis - ref));
+}
+
+// void HeartBeat(unsigned char src, char command, unsigned char len, char *data);
+
 void setup()
 {
   ICSC.begin(station, 115200, &Serial, 2);
@@ -54,21 +63,26 @@ void setup()
   ICSC.registerCommand('H', &HeartBeat);
 
   // Initialize the life clocks
-  long currentMillis = millis();
+  currentMillis = millis();
   PULSEtime = currentMillis;
   POLLtime = currentMillis;
   LEDsteptime = currentMillis;
   LEDbirth = currentMillis;
   strip.begin();
-  strip.show(); // Initialize all pixels to 'off'
+  if (station == 1) 
+    strip.setPixelColor(0, 25, 14, 4);
+  else
+    strip.setPixelColor(0, 10, 25, 0);
+  
+  strip.show(); // Initialize all pixels
 }
 
 void loop()
 {
+  currentMillis = millis();
   ICSC.process(); //for all nodes
-  long currentMillis = millis();
 
-  if(currentMillis - POLLtime > POLLspeed) { //specified delay between POLL steps
+  if (timeSince(POLLtime) > POLLspeed) { //specified delay between POLL steps
     POLLtime = currentMillis; //reset last poll time
     //only for master
     if (station == 1) {
@@ -84,20 +98,18 @@ void loop()
   }//end poll
 
   //LOCAL - kills the LED if the timer is up (starts the dimming process)
-  currentMillis = millis();
-  if(currentMillis - LEDbirth > LEDlifespan) {Rset = 0; Gset = 0; Bset = 0;}
+  if (timeSince(LEDbirth) > LEDlifespan) { Rset = 0; Gset = 0; Bset = 0; }
   //end of kill LED
 
 
   //HEARTBEAT indicator for slaves (slaves flash red if master goes silent too long)
   //must recieve broadcast heartbeat from master once per POLLING loop
-  currentMillis = millis();
   if (station > 1) {
     //only for slaves
-    if ( (currentMillis - PULSEtime) > ((POLLsteps+2)*POLLspeed) ) {
+    if (timeSince(PULSEtime) > ((POLLsteps+2)*POLLspeed) ) {
       //only runs if hearbeat not recieved in allowed time
       if (!PULSEflat) {PULSEflat = true; Rnow=0; Gnow=0; Bnow=0; Rset=0; Gset=0; Bset=0;}
-      if (currentMillis - LEDbirth > PULSEflatspeed) { //only blinks so often
+      if (timeSince(LEDbirth) > PULSEflatspeed) { //only blinks so often
         if ((Rnow+Gnow+Bnow) == 0) {
           //only lights the red LED again if the LED has since faded out (has regular lifespan)
           Rset = 20; Gset = 0; Bset = 0; LEDbirth = currentMillis; LEDlifespan = 1000; LEDstepspeed = 50; LEDstepsize = 1;
@@ -108,7 +120,7 @@ void loop()
       PULSEdetect = false;
       if ((Rset+Gset+Bset) == 0) {
         //only blinks if the LEDs are idle, not being used
-        if (currentMillis - LEDbirth > PULSEgoodspeed) { //only blinks so often
+        if (timeSince(LEDbirth) > PULSEgoodspeed) { //only blinks so often
           Rset = 0; Gset = 5; Bset = 0; LEDbirth = currentMillis; LEDlifespan = 30; LEDstepspeed = 10; LEDstepsize = 1;
         }
       }
@@ -117,8 +129,7 @@ void loop()
 
 
   //LOCAL - updates the actual LED in stages at whatever speed currently set (could be going up or killing it)
-  currentMillis = millis();
-  if(currentMillis - LEDsteptime > LEDstepspeed) {
+  if (timeSince(LEDsteptime) > LEDstepspeed) {
     LEDsteptime = currentMillis; // save the last time you updated the LED
     if (Rnow < Rset) {if (Rset - Rnow > 4) {Rnow = Rnow + LEDstepsize;} else {Rnow = Rnow + 1;} }
     if (Rnow > Rset) {if (Rnow - Rset > 4) {Rnow = Rnow - LEDstepsize;} else {Rnow = Rnow - 1;} }
@@ -126,7 +137,6 @@ void loop()
     if (Gnow > Gset) {if (Gnow - Gset > 4) {Gnow = Gnow - LEDstepsize;} else {Gnow = Gnow - 1;} }
     if (Bnow < Bset) {if (Bset - Bnow > 4) {Bnow = Bnow + LEDstepsize;} else {Bnow = Bnow + 1;} }
     if (Bnow > Bset) {if (Bnow - Bset > 4) {Bnow = Bnow - LEDstepsize;} else {Bnow = Bnow - 1;} }
-    strip.setPixelColor(0, Rnow, Gnow, Bnow);
     strip.setPixelColor(1, Rnow, Gnow, Bnow);
     strip.show();
   }
@@ -170,7 +180,6 @@ void HeartBeat(unsigned char src, char command, unsigned char len, char *data)
 {
   PULSEflat = false; //disable the pulse flat flag
   PULSEdetect = true; //trigger the little green blip if LEDs are currently idle (off)
-  unsigned long currentMillis = millis();
   PULSEtime = currentMillis;
 }
 
