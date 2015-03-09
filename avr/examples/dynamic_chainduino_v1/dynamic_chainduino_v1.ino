@@ -12,21 +12,24 @@ int station = 1;  // change station number here (BEFORE uploading to each node)
 int stations = 2; // number of stations
 int POLLstep = 0; // current polling step
 int POLLsteps = 1; // total number of polling steps
-int POLLspeed = 100; //delay between polling for data from nodes
-long POLLtime = 0; //time most recent POLL was run
-long PULSEtime = 0; //record last time heartbeat recieved from master
-int PULSEgoodspeed = 5000; //how often to blink good heartbeat status
-int PULSEflatspeed = 2500; //how often to blink FLAT heartbeat status
+ //delay between polling for data from nodes
+   #define POLLspeed 100
+long POLLtime; //time most recent POLL was run
+long PULSEtime; //record last time heartbeat received from master
+ //how often to blink good heartbeat status
+   #define PULSEgoodspeed 5000 
+ //how often to blink FLAT heartbeat status
+   #define PULSEflatspeed 2500
 boolean PULSEflat = false; //controls the start of the red flashing if pulse dies
 boolean PULSEdetect = false; //controls the start of the green flashing if pulse detected (only if LEDs are off)
 //end station and polling settings
 
 //LED variables
-long LEDbirth = 0; // will store last time LED was updated (color set)
+long LEDbirth; // will store last time LED was updated (color set)
 int LEDlifespan = 500; // how long the LED stays on
 int LEDstepspeed = 50; // speed of which to update the LED
 int LEDstepsize = 5;
-long LEDsteptime = 0; // will store last time color step was sent to the LED
+long LEDsteptime; // will store last time color step was sent to the LED
 int Rset = 0;
 int Gset = 0;
 int Bset = 0;
@@ -50,9 +53,12 @@ void setup()
 //  ICSC.registerCommand('O', &LightOff);
   ICSC.registerCommand('H', &HeartBeat);
 
-  unsigned long currentMillis = millis();
+  // Initialize the life clocks
+  long currentMillis = millis();
   PULSEtime = currentMillis;
+  POLLtime = currentMillis;
   LEDsteptime = currentMillis;
+  LEDbirth = currentMillis;
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
 }
@@ -60,7 +66,7 @@ void setup()
 void loop()
 {
   ICSC.process(); //for all nodes
-  unsigned long currentMillis = millis();
+  long currentMillis = millis();
 
   if(currentMillis - POLLtime > POLLspeed) { //specified delay between POLL steps
     POLLtime = currentMillis; //reset last poll time
@@ -90,7 +96,7 @@ void loop()
     //only for slaves
     if ( (currentMillis - PULSEtime) > ((POLLsteps+2)*POLLspeed) ) {
       //only runs if hearbeat not recieved in allowed time
-      if (!PULSEflat) {PULSEflat = true; Rnow=0; Gnow=0; Bnow; Rset=0; Gset=0; Bset=0;}
+      if (!PULSEflat) {PULSEflat = true; Rnow=0; Gnow=0; Bnow=0; Rset=0; Gset=0; Bset=0;}
       if (currentMillis - LEDbirth > PULSEflatspeed) { //only blinks so often
         if ((Rnow+Gnow+Bnow) == 0) {
           //only lights the red LED again if the LED has since faded out (has regular lifespan)
