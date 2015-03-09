@@ -235,4 +235,9 @@ const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
 #define SERIAL_PORT_MONITOR   Serial
 #define SERIAL_PORT_HARDWARE  Serial
 
+// The ChainDuino Primo has 2 NeoPixel LEDs
+#define HAS_NEOPIXEL_ARRAY
+#define NUMBER_OF_NEOPIXEL_ELEMENTS  2
+#define NEOPIXEL_PIN                 6
+
 #endif
