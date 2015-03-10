@@ -103,11 +103,11 @@ void loop()
 
 
   //HEARTBEAT indicator for slaves (slaves flash red if master goes silent too long)
-  //must recieve broadcast heartbeat from master once per POLLING loop
+  //must receive broadcast heartbeat from master once per POLLING loop
   if (station > 1) {
     //only for slaves
     if (timeSince(PULSEtime) > ((POLLsteps+2)*POLLspeed) ) {
-      //only runs if hearbeat not recieved in allowed time
+      //only runs if hearbeat not received in allowed time
       if (!PULSEflat) {PULSEflat = true; Rnow=0; Gnow=0; Bnow=0; Rset=0; Gset=0; Bset=0;}
       if (timeSince(LEDbirth) > PULSEflatspeed) { //only blinks so often
         if ((Rnow+Gnow+Bnow) == 0) {
