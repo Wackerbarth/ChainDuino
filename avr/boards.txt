@@ -79,7 +79,7 @@ ChainPrimo.bootloader.low_fuses=0xFF
 ChainPrimo.bootloader.high_fuses=0xDE
 ChainPrimo.bootloader.extended_fuses=0x05
 ChainPrimo.bootloader.unlock_bits=0x3F
-ChainPrimo.bootloader.lock_bits=0x0F
+ChainPrimo.bootloader.lock_bits=0x2F
 ChainPrimo.bootloader.file=optiboot/optiboot_atmega328.hex
 
 ChainPrimo.build.mcu=atmega328p
