@@ -70,9 +70,9 @@ void setup()
   LEDbirth = currentMillis;
   strip.begin();
   if (station == 1) 
-    strip.setPixelColor(0, 25, 14, 4);
+    strip.setPixelColor(0, 12, 7, 2);
   else
-    strip.setPixelColor(0, 10, 25, 0);
+    strip.setPixelColor(0, 5, 10, 0);
   
   strip.show(); // Initialize all pixels
 }
