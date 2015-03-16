@@ -80,10 +80,36 @@ ChainPrimo.bootloader.high_fuses=0xDE
 ChainPrimo.bootloader.extended_fuses=0x05
 ChainPrimo.bootloader.unlock_bits=0x3F
 ChainPrimo.bootloader.lock_bits=0x2F
-ChainPrimo.bootloader.file=optiboot/optiboot_atmega328.hex
+ChainPrimo.bootloader.file=optiboot/optiboot_chainduino.hex
 
 ChainPrimo.build.mcu=atmega328p
 ChainPrimo.build.f_cpu=16000000L
 ChainPrimo.build.board=AVR_UNO
 ChainPrimo.build.core=arduino:arduino
 ChainPrimo.build.variant=primo
+
+# AVR:ATmega328
+# Ext Crystal Osc.>8 MHz; Start-up time PWRDWN/RESET: 16K CK/14 CK + 65 ms
+# Brown-out detection level 2.7 V. Serial program downloading enabled
+# Boot Reset vector enable (256 words, 0x3f00).
+ChainPrimoC.name=Chainduino Primo (Cosa)(ATmega328/Optiboot)
+ChainPrimoC.upload.tool=arduino:avrdude
+ChainPrimoC.upload.protocol=arduino
+ChainPrimoC.upload.maximum_size=32256
+ChainPrimoC.upload.maximum_data_size=2048
+##ChainPrimoC.upload.maximum_eeprom_size=1024
+ChainPrimoC.upload.speed=115200
+
+ChainPrimoC.bootloader.tool=arduino:avrdude
+ChainPrimoC.bootloader.low_fuses=0xFF
+ChainPrimoC.bootloader.high_fuses=0xDE
+ChainPrimoC.bootloader.extended_fuses=0x05
+ChainPrimoC.bootloader.unlock_bits=0x3F
+ChainPrimoC.bootloader.lock_bits=0x2F
+ChainPrimoC.bootloader.file=optiboot/optiboot_chainduino.hex
+
+ChainPrimoC.build.mcu=atmega328p
+ChainPrimoC.build.f_cpu=16000000L
+ChainPrimoC.build.board=AVR_UNO
+ChainPrimoC.build.core=Cosa:cosa
+ChainPrimoC.build.variant=primo

@@ -1,5 +1,5 @@
 # @file platform.txt
-# @version 1.0
+# @version 0.0.1
 #
 # @section License
 # Copyright (C) 2014, Richard Wackerbarth
@@ -29,7 +29,7 @@
 # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5---3rd-party-Hardware-specification
 
 name=LargeWire Boards
-version=0.0.0
+version=0.0.1
 
 # AVR compile variables
 # ---------------------
@@ -59,7 +59,7 @@ build.extra_flags=
 compiler.c.extra_flags=-Wextra -flto
 compiler.c.elf.extra_flags=-w -Wl,-relax -flto
 compiler.S.extra_flags=
-compiler.cpp.extra_flags=-Wextra -flto -std=gnu++11 -felide-constructors
+compiler.cpp.extra_flags=-Wextra -flto -std=gnu++11 -felide-constructors -mcall-prologues
 compiler.ar.extra_flags=
 compiler.objcopy.eep.extra_flags=
 compiler.elf2hex.extra_flags=
