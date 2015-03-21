@@ -21,7 +21,7 @@ To clone:
 ``git clone https://github.com/Wackerbarth/ChainDuino.git``
 
 ### Setup
-Launch the Arduino IDE and select the newly available board variant from the menu bar under **Tools > Board > CANBus Triple**
+Launch the Arduino IDE and select the newly available board variant from the menu bar under **Tools > Board > Chainduino Primo(ATmega328/Optiboot)**
 
 
 ### What Next?
